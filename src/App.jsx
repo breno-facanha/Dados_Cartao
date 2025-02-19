@@ -27,22 +27,38 @@ function App() {
       toast.error("Preencha todos os campos")
       return
     }
-
-    if(cvv.length < 3){
-      toast.error("Ano deve conter 3 numeros")  
-      return
-    }
-
+    
     if( mes.length < 2){
       toast.error("Mês deve conter 2 numeros")
       return
     }
     
     if( ano.length < 4){
-      toast.error("Ano deve conter 2 numeros")
+      toast.error("Ano deve conter 4 numeros")
       return
     }
     
+    const currentDate = new Date()
+    const currentYear = currentDate.getFullYear()
+    const currentMonth = currentDate.getMonth() + 1
+    console.log(currentYear)
+    console.log(currentMonth)
+
+    if(ano < currentYear || (ano == currentYear && mes < currentMonth)){
+      toast.error("Cartão expirado")
+      return
+    }
+    
+    if(cvv.length < 3){
+      toast.error("Cvv deve conter 3 numeros")  
+      return
+    }
+    
+    if(senha.length < 4){
+      toast.error("Senha deve conter no minimo 4 digitos")  
+      return
+    }
+
   }
 
 
