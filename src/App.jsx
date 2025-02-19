@@ -1,16 +1,58 @@
 import { LuNfc } from "react-icons/lu";
 import { FcSimCardChip } from "react-icons/fc";
 import { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function App() {
 
   const [nomeCartao, setNomeCartao] = useState('')
   const [numeroCartao, setNumeroCartao] = useState('')
+  const [mes, setMes] = useState('')
+  const [ano, setAno] = useState('')
+  const [cvv, setCvv] = useState('')
+  const [senha, setSenha] = useState('')
+
+  function handleCardNumber(event){
+    let cardNumber = event.target.value
+    let formattedCardNumber = cardNumber.replace(/\D/g, '') // remove tudo que não for numero
+    formattedCardNumber = formattedCardNumber.substring(0, 16); // Limita o tamanho de numero no cartão
+    formattedCardNumber = formattedCardNumber.replace(/(\d{4})/g, '$1 ').trim(); // Adiciona Espaço a cada 4 numeros
+    setNumeroCartao(formattedCardNumber) 
+  }
+
+  function sendCartao(event){
+    event.preventDefault()
+    if ( !nomeCartao || !numeroCartao || !mes || !ano || !cvv || !senha){
+      toast.error("Preencha todos os campos")
+      return
+    }
+
+    if(cvv.length < 3){
+      toast.error("Ano deve conter 3 numeros")  
+      return
+    }
+
+    if( mes.length < 2){
+      toast.error("Mês deve conter 2 numeros")
+      return
+    }
+    
+    if( ano.length < 4){
+      toast.error("Ano deve conter 2 numeros")
+      return
+    }
+    
+  }
 
 
   return (
     <div className='w-full h-screen flex flex-row'>
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        theme="colored"
+      />
       <div className="w-[50%] h-full relative">
         <div className="w-[60%] h-full bg-purple-800"></div>
         <div className="w-[40%] h-full"></div>
@@ -37,7 +79,9 @@ function App() {
           <div className="w-[600px] h-[340px] bg-slate-950 rounded-[10px] mt-[30px] ml-[250px] flex flex-col items-center">
             <div className="mt-12 h-16 bg-slate-700 w-full"></div>
             <div className="w-[80%] h-16 bg-slate-300 mt-12">
-              <p className="flex justify-end items-center h-16 pr-10 text-2xl italic ">000</p>
+              <p className="flex justify-end items-center h-16 pr-10 text-2xl italic ">
+              {Object.keys(cvv).length > 0  && (cvv)}
+              </p>
             </div>
           </div>
         </div>
@@ -61,10 +105,10 @@ function App() {
               <label htmlFor="" className="mt-2 font-medium">Número do cartão</label>
               <input 
                 type="text" 
+                value={numeroCartao}
                 className="bg-slate-200 py-2 px-4 border-none rounded-md"
                 placeholder="1234 4321 5678 8765"
-                onChange={ (ele) => setNumeroCartao(ele.target.value)}
-                value={numeroCartao}
+                onChange={ (ele) => handleCardNumber(ele)}
                 />
             </div>
             
@@ -72,25 +116,50 @@ function App() {
               <div className="flex flex-col">
                 <label htmlFor="" className="mt-2 font-medium">Data de expiração</label>
                 <div className="flex gap-2">
-                  <input type="text" className="bg-slate-200 py-2 px-4 border-none rounded-md w-[130px]"placeholder="MM"/>
-                  <input type="text" className="bg-slate-200 py-2 px-4 border-none rounded-md w-[130px]"placeholder="AA"/>
+                  <input 
+                    value={mes}
+                    type="text" 
+                    className="bg-slate-200 py-2 px-4 border-none rounded-md w-[130px]"
+                    placeholder="MM"
+                    onChange={ ele => setMes(ele.target.value.replace(/\D/g, ''))}
+                    maxLength={2}/>
+                  <input 
+                    value={ano}
+                    type="text" 
+                    className="bg-slate-200 py-2 px-4 border-none rounded-md w-[130px]"
+                    placeholder="AAAA"
+                    onChange={ ele => setAno(ele.target.value.replace(/\D/g, ''))}
+                    maxLength={4}
+                    />
                 </div>
               </div>
               
               <div className="flex flex-col">
                 <label htmlFor="" className="mt-2 font-medium">CVV</label>
-                <input type="text" className="bg-slate-200 py-2 px-4 border-none rounded-md w-[130px]"placeholder="000"/>
+                <input 
+                  value={cvv}
+                  type="text" 
+                  className="bg-slate-200 py-2 px-4 border-none rounded-md w-[130px]"
+                  placeholder="000"
+                  onChange={ele => setCvv(ele.target.value.replace(/\D/g, ''))}
+                  maxLength={3}
+                  />
               </div>
             </div>
             
             <div className="flex flex-col">
               <label htmlFor="" className="mt-2 font-medium">Senha do cartão</label>
-              <input type="password" className="bg-slate-200 py-2 px-4 border-none rounded-md"placeholder="*********"/>
+              <input 
+                value={senha}
+                type="password" 
+                className="bg-slate-200 py-2 px-4 border-none rounded-md"
+                placeholder="*********"
+                onChange={ ele => setSenha(ele.target.value)}/>
             </div>
 
             <button 
               className="bg-purple-800 px-2 py-4 rounded-md mt-10 text-amber-50 cursor-pointer"
-              onClick={()=> alert('VOCÊ FOI CLONADO')}
+              onClick={sendCartao}
               >
                 Verificar
               </button>
