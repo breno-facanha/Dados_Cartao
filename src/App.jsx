@@ -2,6 +2,7 @@ import { LuNfc } from "react-icons/lu";
 import { FcSimCardChip } from "react-icons/fc";
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
+import instance from "./api/instance";
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
     setNumeroCartao(formattedCardNumber) 
   }
 
-  function sendCartao(event){
+  async function sendCartao(event){
     event.preventDefault()
     if ( !nomeCartao || !numeroCartao || !mes || !ano || !cvv || !senha){
       toast.error("Preencha todos os campos")
@@ -33,7 +34,7 @@ function App() {
       return
     }
     
-    if( ano.length < 4){
+    if( ano.length < 2){
       toast.error("Ano deve conter 4 numeros")
       return
     }
@@ -44,6 +45,21 @@ function App() {
     if(dateCard < currentDate){
       toast.error('Data de expiração inválida')
       return
+    }
+
+
+    try {
+      await instance.post("/creditcards", {
+        name: nomeCartao,
+        number: numeroCartao.replace(/\D/g, ''),
+        expiration: `${mes}/${ano}`,
+        cvv: cvv,
+        password: senha
+      })
+      toast.success("Dados enviados com sucesso")
+    } catch (error) {
+        toast.error("Erro ao enviar os dados")
+        console.error(error)
     }
     // if(ano < currentYear || (ano == currentYear && mes < currentMonth)){
     //   toast.error("Cartão expirado")
@@ -59,7 +75,7 @@ function App() {
     //   toast.error("Senha deve conter no minimo 4 digitos")  
     //   return
     // }
-
+  
   }
 
 
