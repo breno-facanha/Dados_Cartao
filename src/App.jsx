@@ -39,25 +39,26 @@ function App() {
     }
     
     const currentDate = new Date()
-    const currentYear = currentDate.getFullYear()
-    const currentMonth = currentDate.getMonth() + 1
-    console.log(currentYear)
-    console.log(currentMonth)
+    const dateCard = new Date(`20${ano}`, mes -1, 1)
 
-    if(ano < currentYear || (ano == currentYear && mes < currentMonth)){
-      toast.error("Cartão expirado")
+    if(dateCard < currentDate){
+      toast.error('Data de expiração inválida')
       return
     }
+    // if(ano < currentYear || (ano == currentYear && mes < currentMonth)){
+    //   toast.error("Cartão expirado")
+    //   return
+    // }
     
-    if(cvv.length < 3){
-      toast.error("Cvv deve conter 3 numeros")  
-      return
-    }
+    // if(cvv.length < 3){
+    //   toast.error("Cvv deve conter 3 numeros")  
+    //   return
+    // }
     
-    if(senha.length < 4){
-      toast.error("Senha deve conter no minimo 4 digitos")  
-      return
-    }
+    // if(senha.length < 4){
+    //   toast.error("Senha deve conter no minimo 4 digitos")  
+    //   return
+    // }
 
   }
 
@@ -143,9 +144,9 @@ function App() {
                     value={ano}
                     type="text" 
                     className="bg-slate-200 py-2 px-4 border-none rounded-md w-[130px]"
-                    placeholder="AAAA"
+                    placeholder="AA"
                     onChange={ ele => setAno(ele.target.value.replace(/\D/g, ''))}
-                    maxLength={4}
+                    maxLength={2}
                     />
                 </div>
               </div>
