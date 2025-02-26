@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import instance from "../../api/instance";
 
 
-export default function PagePagemnto(){
+export default function PagePagamento(){
     const [nomeCartao, setNomeCartao] = useState('')
     const [numeroCartao, setNumeroCartao] = useState('')
     const [mes, setMes] = useState('')

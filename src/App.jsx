@@ -1,11 +1,11 @@
-import PagePagemnto from "./pages/pagamento"
+import PagePagamento from "./pages/pagamento"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 function App() {
   return (
     <BrowserRouter> 
       <Routes>
-        <Route path="/pagamento" element={<PagePagemnto/>}/>
+        <Route path="/pagamento" element={<PagePagamento/>}/>
       </Routes>
     </BrowserRouter>
   )
