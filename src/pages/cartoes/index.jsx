@@ -22,9 +22,9 @@ export default function PageCartoes() {
       <div className="w-full h-[15%] flex items-center justify-center">
         <h1 className="text-[28px] font-bold">Cartões Cadastrados</h1>
       </div>
-      <div className="w-full h-auto grid">
+      <div className="w-full h-auto flex flex-wrap justify-center">
         {cartoes.map( (event) => {
-          return <CardComponent key={event._id} nome={event.name} numero={event.number} />
+          return <CardComponent key={event._id} cartao={event} />
         } )}
       
       </div>
